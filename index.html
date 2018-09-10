@@ -141,6 +141,7 @@
             android: null,
             ios: null,
             gradients: {},
+            valueIndex: 0,
             init: function () {
                 var grad;
                 // the proportion of width to height
@@ -186,7 +187,7 @@
 
                 grad = FB.ctx.createLinearGradient(0, 0, 0, FB.HEIGHT);
                 grad.addColorStop(0, '#036');
-                grad.addColorStop(1, 'black');
+                grad.addColorStop(1, '#00447C');
                 FB.gradients.night = grad;
 
                 // listen for clicks
@@ -339,6 +340,13 @@
                 FB.ctx.font = 'bold ' + size + 'px Monospace';
                 FB.ctx.fillStyle = col;
                 FB.ctx.fillText(string, x, y);
+            },
+            imageRect: function(img, x, y, w, h) {
+                FB.ctx.save();
+                FB.ctx.rect(x, y, w, h);
+                FB.ctx.clip();
+                FB.ctx.drawImage(img, x, y);
+                FB.ctx.restore();
             }
 
         };
@@ -419,9 +427,9 @@
             };
 
             this.render = function () {
-                FB.Draw.rect(this.x, this.y, this.r, 100, '#D2691E');
+                FB.Draw.rect(this.x, this.y, this.r, 100, '#6EA204');
                 for (var i = 0; i < 10; i++) {
-                    FB.Draw.semiCircle(this.x + i * (this.r / 9), this.y, 20, '#050');
+                    FB.Draw.semiCircle(this.x + i * (this.r / 9), this.y, 20, '#fff');
                 }
             }
 
@@ -472,6 +480,10 @@
             this.h = FB.HEIGHT - 150;
             this.vx = -1;
             this.type = 'pipe';
+            this.values = ['Customers', 'Winning Together', 'Innovation', 'Results', 'Integrity'];
+            this.coinValue = this.values[FB.valueIndex];
+            FB.valueIndex = (FB.valueIndex + 1) % this.values.length;
+
 
 
             this.update = function () {
@@ -485,10 +497,14 @@
             this.render = function () {
 
                 if (this.coin) {
-                    FB.Draw.circle(this.centerX + this.w / 2 - 5, this.centerY - 5, 5, "Gold")
+                    FB.Draw.text(this.coinValue, this.centerX + this.w/2 - ((this.coinValue.length*6)/2), this.centerY, 12, "#B7295A");
                 }
-                FB.Draw.rect(this.centerX, 0, this.w, this.centerY - 50, '#8ED6FF');
-                FB.Draw.rect(this.centerX, this.centerY + 50, this.w, this.h - this.centerY, '#8ED6FF');
+                var pipeColor = FB.ctx.createLinearGradient(this.centerX, 0, this.centerX + this.w, 0);
+                pipeColor.addColorStop(0, '#AAAAAA');
+                pipeColor.addColorStop(0.5, '#eee');
+                pipeColor.addColorStop(1, '#AAAAAA');
+                FB.Draw.rect(this.centerX, 0, this.w, this.centerY - 50, pipeColor);
+                FB.Draw.rect(this.centerX, this.centerY + 50, this.w, this.h - this.centerY, pipeColor);
             }
 
             this.respawn = function () {
@@ -671,9 +687,9 @@
                 for (i = 0; i < 2; i += 1) {
                     FB.entities.push(new FB.BottomBar(FB.WIDTH * i, FB.HEIGHT - 100, FB.WIDTH));
                 }
-                FB.entities.push(new FB.Tree(~~(Math.random() * FB.WIDTH), FB.HEIGHT - 160));
-                FB.entities.push(new FB.Tree(~~(Math.random() * FB.WIDTH + 50), FB.HEIGHT - 160));
-                FB.entities.push(new FB.Tree(~~(Math.random() * FB.WIDTH + 100), FB.HEIGHT - 160));
+                // FB.entities.push(new FB.Tree(~~(Math.random() * FB.WIDTH), FB.HEIGHT - 160));
+                // FB.entities.push(new FB.Tree(~~(Math.random() * FB.WIDTH + 50), FB.HEIGHT - 160));
+                // FB.entities.push(new FB.Tree(~~(Math.random() * FB.WIDTH + 100), FB.HEIGHT - 160));
 			}
 			
 			this.update = function(){
