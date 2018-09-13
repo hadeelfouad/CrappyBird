@@ -3,34 +3,45 @@
 
 <head>
     <meta charset="UTF-8">
-	<meta content="Flappy Bird,game,Crappy Bird,clone,javascript,html5 game,mobile,canvas,flappy bird source" name="keywords"/>
-	<meta name="description" content="Clone of Flappy bird game in javascript using canvas 2d">
+    <meta content="Flappy Bird,game,Crappy Bird,clone,javascript,html5 game,mobile,canvas,flappy bird source" name="keywords"
+    />
+    <meta name="description" content="Clone of Flappy bird game in javascript using canvas 2d">
     <meta name="viewport" content="width=device-width, 
     user-scalable=no, initial-scale=1, maximum-scale=1, user-scalable=0" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-
     <style type="text/css">
         body {
             margin: 0;
             padding: 0;
-            background: #000;
+            background: #808080;
         }
+
         canvas {
             display: block;
             margin: 0 auto;
             background: #fff;
         }
+
         audio {
             display: none;
         }
-    </style>
 
+        .header {
+            height: 70px;
+            background-color: #002538;
+            padding-top: 10px;
+        }
+    </style>
 </head>
 
 <body>
-
-    <canvas></canvas>
+    <div class='header'>
+        <a href="http://localhost:4400">
+            <img class="image" src="logo.png" height="50" width="50" />
+        </a>
+    </div>
+    <canvas id='canavas'></canvas>
     <script>
 		/*
 		   =================================================================
@@ -43,7 +54,7 @@
 
 
         // http://paulirish.com/2011/requestanimationframe-for-smart-animating
-         // shim layer with setTimeout fallback
+        // shim layer with setTimeout fallback
         window.requestAnimFrame = (function () {
             return window.requestAnimationFrame ||
                 window.webkitRequestAnimationFrame ||
@@ -52,16 +63,16 @@
                 window.msRequestAnimationFrame ||
                 function (callback) {
                     window.setTimeout(callback, 1000 / 60);
-            };
+                };
         })();
-         //sounds
+        //sounds
 
         var soundJump = new Audio("wing.ogg");
         var soundScore = new Audio("point.ogg");
         var soundHit = new Audio("hit.ogg");
         var soundDie = new Audio("die.ogg");
         var soundSwoosh = new Audio("swooshing.ogg");
-         //http://www.storiesinflight.com/html5/audio.html
+        //http://www.storiesinflight.com/html5/audio.html
         var channel_max = 10; // number of channels
         audiochannels = new Array();
         for (a = 0; a < channel_max; a++) { // prepare the channels
@@ -82,28 +93,25 @@
                 }
             }
         }
-		
-		function getCookie(cname)
-		{
-		   var name = cname + "=";
-		   var ca = document.cookie.split(';');
-		   for(var i=0; i<ca.length; i++) 
-		   {
-			  var c = ca[i].trim();
-			  if (c.indexOf(name)==0) return c.substring(name.length,c.length);
-		   }
-		   return "";
-		}
 
-		function setCookie(cname,cvalue,exdays)
-		{
-		   var d = new Date();
-		   d.setTime(d.getTime()+(exdays*24*60*60*1000));
-		   var expires = "expires="+d.toGMTString();
-		   document.cookie = cname + "=" + cvalue + "; " + expires;
-		}
+        function getCookie(cname) {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i].trim();
+                if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+            }
+            return "";
+        }
 
-         // namespace our game
+        function setCookie(cname, cvalue, exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            var expires = "expires=" + d.toGMTString();
+            document.cookie = cname + "=" + cvalue + "; " + expires;
+        }
+
+        // namespace our game
         var FB = {
             // set up some inital values
             WIDTH: 320,
@@ -126,13 +134,13 @@
                 coins: 0
             },
             distance: 0,
-			digits:[],
-			fonts:[],
+            digits: [],
+            fonts: [],
             // we'll set the rest of these
             // in the init function
             RATIO: null,
             bg_grad: "day",
-			game:null,
+            game: null,
             currentWidth: null,
             currentHeight: null,
             canvas: null,
@@ -142,7 +150,7 @@
             ios: null,
             gradients: {},
             valueIndex: 0,
-            values : ['Customers', 'Winning Together', 'Innovation', 'Results', 'Integrity'],
+            values: ['Customers', 'Winning Together', 'Innovation', 'Results', 'Integrity'],
             init: function () {
                 var grad;
                 // the proportion of width to height
@@ -192,35 +200,35 @@
                 FB.gradients.night = grad;
 
                 // listen for clicks
-                window.addEventListener('click', function (e) {
+                document.getElementById('canavas').addEventListener('click', function (e) {
                     e.preventDefault();
                     FB.Input.set(e);
                 }, false);
 
                 // listen for touches
-                window.addEventListener('touchstart', function (e) {
+                document.getElementById('canavas').addEventListener('touchstart', function (e) {
                     e.preventDefault();
                     // the event object has an array
                     // called touches, we just want
                     // the first touch
                     FB.Input.set(e.touches[0]);
                 }, false);
-                window.addEventListener('touchmove', function (e) {
+                document.getElementById('canavas').addEventListener('touchmove', function (e) {
                     // we're not interested in this
                     // but prevent default behaviour
                     // so the screen doesn't scroll
                     // or zoom
                     e.preventDefault();
                 }, false);
-                window.addEventListener('touchend', function (e) {
+                document.getElementById('canavas').addEventListener('touchend', function (e) {
                     // as above
                     e.preventDefault();
                 }, false);
 
                 // we're ready to resize
                 FB.resize();
-				FB.changeState("Splash");
-                
+                FB.changeState("Splash");
+
                 FB.loop();
 
             },
@@ -260,7 +268,7 @@
                     window.scrollTo(0, 1);
                 }, 1);
             },
-			            
+
             // this is where all entities will be moved
             // and checked for collisions etc
             update: function () {
@@ -272,14 +280,14 @@
             render: function () {
 
                 FB.Draw.rect(0, 0, FB.WIDTH, FB.HEIGHT, FB.gradients[FB.bg_grad]);
-				 
+
                 // cycle through all entities and render to canvas
                 for (i = 0; i < FB.entities.length; i += 1) {
                     FB.entities[i].render();
                 }
-					
-				FB.game.render();
-				
+
+                FB.game.render();
+
             },
 
             // the actual loop
@@ -293,14 +301,14 @@
                 FB.update();
                 FB.render();
             },
-			changeState: function(state) {    				 
-				FB.game = new window[state]();
-				FB.game.init();
-			}
+            changeState: function (state) {
+                FB.game = new window[state]();
+                FB.game.init();
+            }
         };
 
-         // abstracts various canvas operations into
-         // standalone functions
+        // abstracts various canvas operations into
+        // standalone functions
         FB.Draw = {
 
             clear: function () {
@@ -318,9 +326,9 @@
                 FB.ctx.closePath();
                 FB.ctx.fill();
             },
-			Image:function(img,x,y){				
-				FB.ctx.drawImage(img,x,y);
-			},
+            Image: function (img, x, y) {
+                FB.ctx.drawImage(img, x, y);
+            },
             Sprite: function (img, srcX, srcY, srcW, srcH, destX, destY, destW, destH, r) {
                 FB.ctx.save();
                 FB.ctx.translate(destX, destY);
@@ -342,7 +350,7 @@
                 FB.ctx.fillStyle = col;
                 FB.ctx.fillText(string, x, y);
             },
-            imageRect: function(img, x, y, w, h) {
+            imageRect: function (img, x, y, w, h) {
                 FB.ctx.save();
                 FB.ctx.rect(x, y, w, h);
                 FB.ctx.clip();
@@ -403,8 +411,8 @@
 
             this.respawn = function () {
 
-                this.x = ~~ (Math.random() * this.r * 2) + FB.WIDTH;
-                this.y = ~~ (Math.random() * FB.HEIGHT / 2)
+                this.x = ~~(Math.random() * this.r * 2) + FB.WIDTH;
+                this.y = ~~(Math.random() * FB.HEIGHT / 2)
 
 
             };
@@ -497,7 +505,7 @@
             this.render = function () {
 
                 if (this.coin) {
-                    FB.Draw.text(this.coinValue, this.centerX + this.w/2 - ((this.coinValue.length*6)/2), this.centerY, 12, "#B7295A");
+                    FB.Draw.text(this.coinValue, this.centerX + this.w / 2 - ((this.coinValue.length * 6) / 2), this.centerY, 12, "#B7295A");
                 }
                 var pipeColor = FB.ctx.createLinearGradient(this.centerX, 0, this.centerX + this.w, 0);
                 pipeColor.addColorStop(0, '#AAAAAA');
@@ -586,8 +594,8 @@
 
             // random values so particles do no
             // travel at the same speeds
-            this.vx = ~~ (Math.random() * 4) * this.dir;
-            this.vy = ~~ (Math.random() * 7);
+            this.vx = ~~(Math.random() * 4) * this.dir;
+            this.vy = ~~(Math.random() * 7);
 
             this.remove = false;
 
@@ -626,17 +634,17 @@
 
         };
 
-         // checks if two entities are touching
+        // checks if two entities are touching
         FB.Collides = function (bird, pipe) {
-		
-			if(bird.vy >=370){				  
-				 
-				 return true;
-			}
+
+            if (bird.vy >= 370) {
+
+                return true;
+            }
             if (pipe.coin && bird.vx > pipe.centerX + 5) {
                 pipe.coin = false;
                 FB.score.coins += 1;
-				FB.digits = FB.score.coins.toString().split('');
+                FB.digits = FB.score.coins.toString().split('');
                 play_sound(soundScore);
             }
 
@@ -668,50 +676,50 @@
             return (c1 || c2)
 
         };
-		
-		window.Splash = function(){
-			
-			this.banner = new Image();
-			this.banner.src = "splash.png";
-			
-			this.init = function(){
-				play_sound(soundSwoosh);
-				FB.distance = 0;
+
+        window.Splash = function () {
+
+            this.banner = new Image();
+            this.banner.src = "splash.png";
+
+            this.init = function () {
+                play_sound(soundSwoosh);
+                FB.distance = 0;
                 FB.bg_grad = "day";
                 FB.entities = [];
-				FB.score.taps = FB.score.coins = 0;
+                FB.score.taps = FB.score.coins = 0;
                 //Add entities
-                FB.entities.push(new FB.Cloud(30, ~~ (Math.random() * FB.HEIGHT / 2)));
-                FB.entities.push(new FB.Cloud(130, ~~ (Math.random() * FB.HEIGHT / 2)));
-                FB.entities.push(new FB.Cloud(230, ~~ (Math.random() * FB.HEIGHT / 2)));
+                FB.entities.push(new FB.Cloud(30, ~~(Math.random() * FB.HEIGHT / 2)));
+                FB.entities.push(new FB.Cloud(130, ~~(Math.random() * FB.HEIGHT / 2)));
+                FB.entities.push(new FB.Cloud(230, ~~(Math.random() * FB.HEIGHT / 2)));
                 for (i = 0; i < 2; i += 1) {
                     FB.entities.push(new FB.BottomBar(FB.WIDTH * i, FB.HEIGHT - 100, FB.WIDTH));
                 }
                 // FB.entities.push(new FB.Tree(~~(Math.random() * FB.WIDTH), FB.HEIGHT - 160));
                 // FB.entities.push(new FB.Tree(~~(Math.random() * FB.WIDTH + 50), FB.HEIGHT - 160));
                 // FB.entities.push(new FB.Tree(~~(Math.random() * FB.WIDTH + 100), FB.HEIGHT - 160));
-			}
-			
-			this.update = function(){
-				for (i = 0; i < FB.entities.length; i += 1) {
-                    FB.entities[i].update();                    
+            }
+
+            this.update = function () {
+                for (i = 0; i < FB.entities.length; i += 1) {
+                    FB.entities[i].update();
                 }
-				if (FB.Input.tapped) {
-					FB.changeState('Play');
-					FB.Input.tapped = false;
-				}
-			}
-			
-			this.render = function(){
-				FB.Draw.Image(this.banner,66,100);
-			}
-		
-		}
-		
-		window.Play = function(){
-			
-			this.init = function(){			
-				 
+                if (FB.Input.tapped) {
+                    FB.changeState('Play');
+                    FB.Input.tapped = false;
+                }
+            }
+
+            this.render = function () {
+                FB.Draw.Image(this.banner, 66, 100);
+            }
+
+        }
+
+        window.Play = function () {
+
+            this.init = function () {
+
                 FB.valueIndex = ~~(Math.random() * FB.values.length);
                 FB.entities.push(new FB.Pipe(FB.WIDTH * 2, 50));
                 FB.entities.push(new FB.Pipe(FB.WIDTH * 2 + FB.WIDTH / 2, 50));
@@ -719,17 +727,17 @@
 
                 FB.bird = new FB.Bird();
                 FB.entities.push(FB.bird);
-				for(var n=0;n<10;n++){
-					var img = new Image();
-					img.src = "font_small_" + n +'.png';
-					FB.fonts.push(img);
-				}
-				FB.digits = ["0"];
-			}
-			
-			this.update = function() { 
-				
-				FB.distance += 1;
+                for (var n = 0; n < 10; n++) {
+                    var img = new Image();
+                    img.src = "font_small_" + n + '.png';
+                    FB.fonts.push(img);
+                }
+                FB.digits = ["0"];
+            }
+
+            this.update = function () {
+
+                FB.distance += 1;
                 var levelUp = ((FB.distance % 2048) === 0) ? true : false;
                 if (levelUp) {
                     var bg = "day";
@@ -772,104 +780,99 @@
                         var hit = FB.Collides(FB.bird, FB.entities[i]);
                         if (hit) {
                             play_sound(soundHit);
-							FB.changeState('GameOver');
-							 break;
+                            FB.changeState('GameOver');
+                            break;
                         }
                     }
                 }
-			}
-			
-			this.render = function() { 
-				//score				
-				var X = (FB.WIDTH/2-(FB.digits.length*14)/2);				
-				for(var i = 0; i < FB.digits.length; i++)
-				{
-				  FB.Draw.Image(FB.fonts[Number(FB.digits[i])],X+(i*14),10);
-				}
-			}
-		
-		}
-		
-		window.GameOver = function(){
-			
-			this.getMedal = function()
-			{
-			   var score = FB.score.coins;
-			   console.log(score)
-			   if(score <= 10)
-				  medal = "bronze";
-			   if(score >= 20)
-				  medal = "silver";
-			   if(score >= 30)
-				  medal = "gold";
-			   if(score >= 40)
-				  medal = "platinum";
-			
-				return medal;
-			}
-			this.getHighScore = function(){
-				var savedscore = getCookie("highscore");
-			    if(savedscore != ""){
-					var hs = parseInt(savedscore) || 0;
-					if(hs < FB.score.coins)
-					{
-					 hs = FB.score.coins
-					 setCookie("highscore", hs, 999);
-					}
-					return hs;
-				  }
-				  else
-				  {					 
-					setCookie("highscore", FB.score.coins, 999);
-					return  FB.score.coins;
-				  }
-			}
-			this.init = function(){
-						
-			    var that = this;
-				setTimeout(function() {
-					play_sound(soundDie);
-					that.banner = new Image();
-					that.banner.src = "scoreboard.png";
-					var m = that.getMedal();
-					that.medal =  new Image();
-					that.medal.src = 'medal_' + m +'.png';
-					that.replay = new Image();
-					that.replay.src = "replay.png";
-					that.highscore = that.getHighScore() ;
-				}, 500);
-				
-			}
-			
-			this.update = function(){				
-				if (FB.Input.tapped) {
-					var x = FB.Input.x;
-					var y = FB.Input.y;
-					
-					 if((x >= 102.5 && x <= 102.5+115) && (y >= 260 && y <= 260+70)){       
-						FB.changeState('Splash');
-					}
-					FB.Input.tapped = false;
-				}
-				FB.bird.update();
-			}
-			
-			this.render = function(){
-				if(this.banner){
-					FB.Draw.Image(this.banner,42,70);
-					FB.Draw.Image(this.medal,75,183);
-					FB.Draw.Image(this.replay,102.5,260);
-					FB.Draw.text(FB.score.coins, 220, 185, 15, 'black');
-					FB.Draw.text(this.highscore, 220, 225, 15, 'black');
-				}
-			}
-		
-		}
+            }
+
+            this.render = function () {
+                //score				
+                var X = (FB.WIDTH / 2 - (FB.digits.length * 14) / 2);
+                for (var i = 0; i < FB.digits.length; i++) {
+                    FB.Draw.Image(FB.fonts[Number(FB.digits[i])], X + (i * 14), 10);
+                }
+            }
+
+        }
+
+        window.GameOver = function () {
+
+            this.getMedal = function () {
+                var score = FB.score.coins;
+                console.log(score)
+                if (score <= 10)
+                    medal = "bronze";
+                if (score >= 20)
+                    medal = "silver";
+                if (score >= 30)
+                    medal = "gold";
+                if (score >= 40)
+                    medal = "platinum";
+
+                return medal;
+            }
+            this.getHighScore = function () {
+                var savedscore = getCookie("highscore");
+                if (savedscore != "") {
+                    var hs = parseInt(savedscore) || 0;
+                    if (hs < FB.score.coins) {
+                        hs = FB.score.coins
+                        setCookie("highscore", hs, 999);
+                    }
+                    return hs;
+                }
+                else {
+                    setCookie("highscore", FB.score.coins, 999);
+                    return FB.score.coins;
+                }
+            }
+            this.init = function () {
+
+                var that = this;
+                setTimeout(function () {
+                    play_sound(soundDie);
+                    that.banner = new Image();
+                    that.banner.src = "scoreboard.png";
+                    var m = that.getMedal();
+                    that.medal = new Image();
+                    that.medal.src = 'medal_' + m + '.png';
+                    that.replay = new Image();
+                    that.replay.src = "replay.png";
+                    that.highscore = that.getHighScore();
+                }, 500);
+
+            }
+
+            this.update = function () {
+                if (FB.Input.tapped) {
+                    var x = FB.Input.x;
+                    var y = FB.Input.y;
+
+                    if ((x >= 102.5 && x <= 102.5 + 115) && (y >= 260 && y <= 260 + 70)) {
+                        FB.changeState('Splash');
+                    }
+                    FB.Input.tapped = false;
+                }
+                FB.bird.update();
+            }
+
+            this.render = function () {
+                if (this.banner) {
+                    FB.Draw.Image(this.banner, 42, 70);
+                    FB.Draw.Image(this.medal, 75, 183);
+                    FB.Draw.Image(this.replay, 102.5, 260);
+                    FB.Draw.text(FB.score.coins, 220, 185, 15, 'black');
+                    FB.Draw.text(this.highscore, 220, 225, 15, 'black');
+                }
+            }
+
+        }
 
         window.addEventListener('load', FB.init, false);
         window.addEventListener('resize', FB.resize, false);
     </script>
-
 </body>
 
 </html>
