@@ -10,6 +10,9 @@
     user-scalable=no, initial-scale=1, maximum-scale=1, user-scalable=0" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
     <style type="text/css">
         body {
             margin: 0;
@@ -32,16 +35,31 @@
             background-color: #002538;
             padding-top: 10px;
         }
+        .home-container {
+            margin-top: 20px;
+        }
+        .home-btn {
+            background-color: #002538;
+            color: white;
+            width: 100%;
+            text-align: center;
+            font-size: 20px;
+        }
     </style>
 </head>
 
 <body>
-    <div class='header'>
-        <a href="http://localhost:4400">
+    <div class="header">
+        <a href="http://b1-screen.cec.lab.emc.com/">
             <img class="image" src="logo.png" height="50" width="50" />
         </a>
     </div>
-    <canvas id='canavas'></canvas>
+    <canvas id="canavas"></canvas>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4 home-container">
+            <button class="btn-lg home-btn" onclick="window.location.href='http://b1-screen.cec.lab.emc.com/'">Home</button>
+        </div>
+    </div>
     <script>
 		/*
 		   =================================================================
