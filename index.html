@@ -35,9 +35,11 @@
             background-color: #002538;
             padding-top: 10px;
         }
+
         .home-container {
             margin-top: 20px;
         }
+
         .home-btn {
             background-color: #002538;
             color: white;
@@ -55,9 +57,11 @@
         </a>
     </div>
     <canvas id="canavas"></canvas>
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4 home-container">
-            <button class="btn btn-lg home-btn" onclick="window.location.href='http://b1-screen.cec.lab.emc.com/'">Home</button>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 home-container">
+                <button class="btn btn-lg home-btn" onclick="window.location.href='http://b1-screen.cec.lab.emc.com/'">Home</button>
+            </div>
         </div>
     </div>
     <script>
@@ -253,7 +257,7 @@
 
             resize: function () {
 
-                FB.currentHeight = window.innerHeight;
+                FB.currentHeight = window.innerHeight - 140;
                 // resize the width in proportion
                 // to the new height
                 FB.currentWidth = FB.currentHeight * FB.RATIO;
